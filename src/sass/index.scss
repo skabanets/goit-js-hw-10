@@ -13,13 +13,10 @@ p {
   margin-top: -50px;
 }
 
-.breed-select {
-  margin-bottom: 10px;
-}
-
 .cat-info {
   display: flex;
   gap: 20px;
+  margin-left: 20px;
 }
 
 .cat-text-info {
@@ -45,4 +42,11 @@ p {
 
 .is-hidden {
   display: none;
+}
+
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+.breed-select {
+  margin: 20px 20px;
+  max-width: 300px;
 }

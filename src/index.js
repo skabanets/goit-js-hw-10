@@ -1,4 +1,5 @@
 import { lineSpinner } from 'ldrs';
+import * as bootstrap from 'bootstrap';
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 import { createCatInfoMarckup } from './createCatInfoMarkup';
 import { createSelectMarkup } from './createSelectMarkup';
