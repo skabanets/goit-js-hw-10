@@ -1,3 +1,4 @@
+import { lineSpinner } from 'ldrs';
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 import { createCatInfoMarckup } from './createCatInfoMarkup';
 import { createSelectMarkup } from './createSelectMarkup';
@@ -31,6 +32,8 @@ const onSelectChange = e => {
 };
 
 const onWindowLoad = () => {
+  lineSpinner.register();
+
   fetchBreeds().then(result => {
     cats = result;
     const markup = createSelectMarkup(result);
