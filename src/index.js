@@ -1,5 +1,7 @@
 import { lineSpinner } from 'ldrs';
-import * as bootstrap from 'bootstrap';
+import SlimSelect from 'slim-select';
+import 'slim-select/dist/slimselect.css';
+import { Notify } from 'notiflix';
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 import { createCatInfoMarckup } from './createCatInfoMarkup';
 import { createSelectMarkup } from './createSelectMarkup';
@@ -22,30 +24,54 @@ const onSelectChange = e => {
   const cat = cats.filter(cat => cat.id === id);
   const { name, description, temperament } = cat[0];
 
-  fetchCatByBreed(id).then(result => {
-    const img = result[0].url;
-    const catMatkup = createCatInfoMarckup(name, description, temperament, img);
+  fetchCatByBreed(id)
+    .then(result => {
+      console.log(result);
+      const img = result[0].url;
+      const catMatkup = createCatInfoMarckup(
+        name,
+        description,
+        temperament,
+        img
+      );
 
-    refs.loader.classList.add('is-hidden');
-    refs.catInfoBox.classList.remove('is-hidden');
-    refs.catInfoBox.innerHTML = catMatkup;
-  });
+      refs.catInfoBox.classList.remove('is-hidden');
+      refs.catInfoBox.innerHTML = catMatkup;
+    })
+    .catch(error => {
+      return Notify.failure(error.message);
+    })
+    .finally(() => {
+      refs.loader.classList.add('is-hidden');
+    });
 };
 
 const onWindowLoad = () => {
   lineSpinner.register();
+  refs.loader.classList.remove('is-hidden');
 
-  fetchBreeds().then(result => {
-    cats = result;
-    const markup = createSelectMarkup(result);
-    refs.select.innerHTML = markup;
+  fetchBreeds()
+    .then(result => {
+      console.log(result);
+      cats = result;
 
-    refs.select.classList.remove('is-hidden');
-    refs.loader.classList.add('is-hidden');
-    refs.catInfoBox.classList.add('is-hidden');
+      const markup = createSelectMarkup(result);
+      refs.select.innerHTML = markup;
 
-    refs.select.addEventListener('change', onSelectChange);
-  });
+      new SlimSelect({
+        select: '#breed-select',
+      });
+
+      refs.select.classList.remove('is-hidden');
+      refs.catInfoBox.classList.add('is-hidden');
+      refs.select.addEventListener('change', onSelectChange);
+    })
+    .catch(error => {
+      return Notify.failure(error.message);
+    })
+    .finally(() => {
+      refs.loader.classList.add('is-hidden');
+    });
 };
 
 window.addEventListener('load', onWindowLoad);

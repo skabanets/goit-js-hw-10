@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Notify } from 'notiflix';
 
 axios.defaults.headers.common['x-api-key'] =
   'live_XjMzyb9eZS59yLID0lEw1FUKNsyzpsYio0gyJQBONCXaFMIDQbys46kRb6UAKaFY';
@@ -7,25 +6,20 @@ axios.defaults.headers.common['x-api-key'] =
 export const fetchBreeds = () => {
   const BASE_URL = 'https://api.thecatapi.com';
 
-  return fetch(`${BASE_URL}/v1/breeds`)
-    .then(res => {
-      if (res.ok) return res.json();
-      throw new Error('Oops! Something went wrong! Try reloading the page!');
-    })
-    .catch(error => {
-      return Notify.failure(error.message);
-    });
+  return axios.get(`${BASE_URL}/v1/breeds`).then(res => {
+    console.log(res);
+    if (res.status) return res.data;
+    throw new Error('Oops! Something went wrong! Try reloading the page!');
+  });
 };
 
 export const fetchCatByBreed = breedId => {
   const BASE_URL = 'https://api.thecatapi.com';
 
-  return fetch(`${BASE_URL}/v1/images/search?breed_ids=${breedId}`)
+  return axios
+    .get(`${BASE_URL}/v1/images/search?breed_ids=${breedId}`)
     .then(res => {
-      if (res.ok) return res.json();
+      if (res.status) return res.data;
       throw new Error('Oops! Something went wrong! Try reloading the page!');
-    })
-    .catch(error => {
-      return Notify.failure(error.message);
     });
 };
