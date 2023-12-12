@@ -13,21 +13,17 @@ const refs = {
   catInfoBox: document.querySelector('.cat-info'),
 };
 
-let cats = [];
-
 const onSelectChange = e => {
   refs.catInfoBox.innerHTML = '';
   refs.loader.classList.remove('is-hidden');
   refs.catInfoBox.classList.add('is-hidden');
   const id = e.target.value;
 
-  const cat = cats.filter(cat => cat.id === id);
-  const { name, description, temperament } = cat[0];
-
   fetchCatByBreed(id)
     .then(result => {
-      console.log(result);
       const img = result[0].url;
+      const { name, description, temperament } = result[0].breeds[0];
+
       const catMatkup = createCatInfoMarckup(
         name,
         description,
@@ -52,9 +48,6 @@ const onWindowLoad = () => {
 
   fetchBreeds()
     .then(result => {
-      console.log(result);
-      cats = result;
-
       const markup = createSelectMarkup(result);
       refs.select.innerHTML = markup;
 

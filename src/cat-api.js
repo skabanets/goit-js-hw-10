@@ -7,7 +7,6 @@ export const fetchBreeds = () => {
   const BASE_URL = 'https://api.thecatapi.com';
 
   return axios.get(`${BASE_URL}/v1/breeds`).then(res => {
-    console.log(res);
     if (res.status) return res.data;
     throw new Error('Oops! Something went wrong! Try reloading the page!');
   });
